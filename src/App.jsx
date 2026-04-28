@@ -1,4 +1,4 @@
-import { specialCards } from "./specialCards";
+// import { specialCards } from "./specialCards";
 import { useEffect, useState } from "react";
 import { db } from "./firebase";
 import {
@@ -244,10 +244,12 @@ function App() {
   const updatePrices = async () => {
     const updated = [];
 
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
     for (let p of pokemons) {
       try {
         const res = await fetch(
-          `http://localhost:3001/price?name=${encodeURIComponent(p.name)}&number=${p.number}&setCode=${p.setCode || ""}&setUrl=${p.setUrl || ""}`
+          `${API_URL}/price?name=${encodeURIComponent(p.name)}&number=${p.number}&setCode=${p.setCode || ""}&setUrl=${p.setUrl || ""}`
         );
         const data = await res.json();
 
