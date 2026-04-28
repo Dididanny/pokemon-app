@@ -1,4 +1,4 @@
-/ * BASE */
+/* BASE */
 * {
   margin: 0;
   padding: 0;
@@ -746,7 +746,7 @@ body {
   line-height: 30px;
   padding: 0;
   position: relative;
-  top: 11px; /* 👈 baja los números */
+  top: 0;
 }
 
 .price-input .euro {
