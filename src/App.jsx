@@ -308,17 +308,17 @@ function App() {
 
   // 📈 gráfico beneficio semanal/mensual
   const profitHistory = [
-    20,
-    45,
-    60,
-    110,
-    90,
-    150,
-    170,
-    210,
-    260,
-    243
-  ];
+  40,
+  55,
+  72,
+  95,
+  110,
+  132,
+  148,
+  172,
+  198,
+  243
+];
 
   const maxValue = Math.max(...profitHistory);
 
@@ -438,195 +438,185 @@ function App() {
 
             </div>
 
-            {/* BENEFICIO + GRÁFICA */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1.4fr 1fr",
-                gap: "20px",
-                marginBottom: "30px"
-              }}
-            >
+            {/* TOP + BENEFICIO */}
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr",
+    gap: "20px",
+    marginBottom: "30px"
+  }}
+>
 
-              <div
+  {/* TOP CARTAS */}
+  <div
+    style={{
+      background: "white",
+      borderRadius: "20px",
+      padding: "24px",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)"
+    }}
+  >
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        marginBottom: "24px"
+      }}
+    >
+      <h3 style={{ fontSize: "22px", fontWeight: "700" }}>
+        🏆 Top cartas de la semana
+      </h3>
+
+      <span
+        style={{
+          color: "#4f46e5",
+          fontWeight: "600",
+          cursor: "pointer"
+        }}
+      >
+        Ver todas
+      </span>
+    </div>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(5, 1fr)",
+        gap: "18px"
+      }}
+    >
+      {[...pokemons]
+        .sort((a, b) => getProfit(b) - getProfit(a))
+        .slice(0, 5)
+        .map((pokemon, index) => {
+
+          const profit = getProfit(pokemon);
+
+          return (
+            <div key={pokemon.id}>
+
+              <img
+                src={getCardImage(null, pokemon)}
+                alt={pokemon.name}
                 style={{
-                  background: "white",
-                  borderRadius: "20px",
-                  padding: "24px",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.05)"
+                  width: "100%",
+                  borderRadius: "14px",
+                  marginBottom: "12px"
+                }}
+              />
+
+              <h4
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "700"
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "20px"
-                  }}
-                >
-                  <div>
-                    <p style={{ color: "#6b7280", fontSize: "14px" }}>
-                      Beneficio mensual
-                    </p>
+                {pokemon.name}
+              </h4>
 
-                    <h2
-                      style={{
-                        fontSize: "42px",
-                        color: isPositive ? "#22c55e" : "#ef4444",
-                        marginTop: "8px"
-                      }}
-                    >
-                      {isPositive ? "+" : ""}
-                      {trendValue.toFixed(2)} €
-                    </h2>
-                  </div>
-
-                  <div
-                    style={{
-                      width: "54px",
-                      height: "54px",
-                      borderRadius: "14px",
-                      background: "#eef2ff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <LineChart color="#4f46e5" size={28} />
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    width: "100%",
-                    height: "320px",
-                    background: "linear-gradient(180deg, #eef2ff 0%, #ffffff 100%)",
-                    borderRadius: "22px",
-                    padding: "20px",
-                    position: "relative",
-                    overflow: "hidden",
-                    border: "1px solid #e5e7eb"
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="none"
-                    style={{ width: "100%", height: "100%" }}
-                  >
-                    <defs>
-                      <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.35" />
-                        <stop offset="100%" stopColor="#4f46e5" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-
-                    <line x1="0" y1="80" x2="100" y2="80" stroke="#e5e7eb" strokeWidth="0.6" />
-                    <line x1="0" y1="60" x2="100" y2="60" stroke="#e5e7eb" strokeWidth="0.6" />
-                    <line x1="0" y1="40" x2="100" y2="40" stroke="#e5e7eb" strokeWidth="0.6" />
-                    <line x1="0" y1="20" x2="100" y2="20" stroke="#e5e7eb" strokeWidth="0.6" />
-
-                    <polygon
-                      fill="url(#gradient)"
-                      points={`0,100 ${chartPoints} 100,100`}
-                    />
-
-                    <polyline
-                      fill="none"
-                      stroke="#4f46e5"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      points={chartPoints}
-                    />
-
-                    {profitHistory.map((value, index) => {
-                      const x = (index / (profitHistory.length - 1)) * 100;
-                      const y = 100 - (value / maxValue) * 100;
-
-                      return (
-                        <circle
-                          key={index}
-                          cx={x}
-                          cy={y}
-                          r="1.8"
-                          fill="#4f46e5"
-                          stroke="white"
-                          strokeWidth="1"
-                        />
-                      );
-                    })}
-                  </svg>
-
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: "16px",
-                      left: "20px",
-                      right: "20px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      color: "#9ca3af",
-                      fontSize: "12px"
-                    }}
-                  >
-                    <span>Lun</span>
-                    <span>Mar</span>
-                    <span>Mié</span>
-                    <span>Jue</span>
-                    <span>Vie</span>
-                    <span>Sáb</span>
-                    <span>Dom</span>
-                  </div>
-                </div>
-              </div>
-
-              <div
+              <p
                 style={{
-                  background: "white",
-                  borderRadius: "20px",
-                  padding: "24px",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.05)"
+                  color: "#6b7280",
+                  fontSize: "13px",
+                  marginBottom: "8px"
                 }}
               >
-                <h3 style={{ marginBottom: "20px" }}>
-                  Resumen mensual
-                </h3>
+                {pokemon.set}
+              </p>
 
-                <div style={{ marginBottom: "18px" }}>
-                  <p style={{ color: "#6b7280", fontSize: "14px" }}>
-                    Mejor carta
-                  </p>
-                  <h2>
-                    {pokemons[0]?.name || "Sin cartas"}
-                  </h2>
-                </div>
+              <p
+                style={{
+                  fontWeight: "700"
+                }}
+              >
+                {pokemon.price.toFixed(2)} €
+              </p>
 
-                <div style={{ marginBottom: "18px" }}>
-                  <p style={{ color: "#6b7280", fontSize: "14px" }}>
-                    Valor colección
-                  </p>
-                  <h2>{totalValue.toFixed(2)} €</h2>
-                </div>
-
-                <div style={{ marginBottom: "18px" }}>
-                  <p style={{ color: "#6b7280", fontSize: "14px" }}>
-                    Beneficio medio
-                  </p>
-                  <h2>
-                    {(totalProfit / (totalCards || 1)).toFixed(2)} €
-                  </h2>
-                </div>
-
-                <div>
-                  <p style={{ color: "#6b7280", fontSize: "14px" }}>
-                    Cartas registradas
-                  </p>
-                  <h2>{totalCards}</h2>
-                </div>
-              </div>
+              <p
+                style={{
+                  color: "#22c55e",
+                  fontWeight: "600",
+                  fontSize: "14px"
+                }}
+              >
+                ↑ {profit.toFixed(2)} €
+              </p>
 
             </div>
+          );
+        })}
+    </div>
+  </div>
 
+  {/* BENEFICIO */}
+  <div
+    style={{
+      background: "white",
+      borderRadius: "20px",
+      padding: "24px",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)"
+    }}
+  >
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        marginBottom: "12px"
+      }}
+    >
+      <LineChart size={18} color="#4f46e5" />
+
+      <span style={{ fontWeight: "700" }}>
+        Beneficio semanal
+      </span>
+    </div>
+
+    <h2
+      style={{
+        fontSize: "44px",
+        fontWeight: "800",
+        color: "#22c55e",
+        marginBottom: "20px"
+      }}
+    >
+      +{trendValue.toFixed(2)} €
+    </h2>
+
+    <div style={{ height: "220px" }}>
+      <svg
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        style={{ width: "100%", height: "100%" }}
+      >
+
+        <defs>
+          <linearGradient id="gradientSmall" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#4f46e5" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        <polygon
+          fill="url(#gradientSmall)"
+          points={`0,100 ${chartPoints} 100,100`}
+        />
+
+        <polyline
+          fill="none"
+          stroke="#4f46e5"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          points={chartPoints}
+        />
+
+      </svg>
+    </div>
+  </div>
+
+</div>
             {/* CARDS ORDENADAS */}
             <div className="cards">
               {[...pokemons]
